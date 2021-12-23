@@ -2,13 +2,14 @@
   position: relative;
   margin:1rem 1rem 1rem  auto;
   justify-content: space-between;
+  
 }
 .card img {
   width: 100%;
-  max-width: fit-content !important;
-  height: auto 0 !important;
+  max-width: fit-content ;
+  height: auto 0;
   display: block;
-  border: 3px dotted #969696;
+  border: 3px dotted #240606;
   border-radius: 10px;
 }
 
@@ -27,8 +28,10 @@
 .card .back {
   transition: all ease-in-out 0.3s;
   transition-delay: 0.3s;
+
 }
 .flipped .back {
   transform: rotateY(90deg);
   transition-delay: 0s;
+
 }
