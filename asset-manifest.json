@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/Pokemon-cards-memory-game/static/css/main.e9d6d2dc.chunk.css",
+    "main.css": "/Pokemon-cards-memory-game/static/css/main.2e2cd4f4.chunk.css",
     "main.js": "/Pokemon-cards-memory-game/static/js/main.e23cd114.chunk.js",
     "main.js.map": "/Pokemon-cards-memory-game/static/js/main.e23cd114.chunk.js.map",
     "runtime-main.js": "/Pokemon-cards-memory-game/static/js/runtime-main.0426b798.js",
@@ -8,13 +8,13 @@
     "static/js/2.1bb22a90.chunk.js": "/Pokemon-cards-memory-game/static/js/2.1bb22a90.chunk.js",
     "static/js/2.1bb22a90.chunk.js.map": "/Pokemon-cards-memory-game/static/js/2.1bb22a90.chunk.js.map",
     "index.html": "/Pokemon-cards-memory-game/index.html",
-    "static/css/main.e9d6d2dc.chunk.css.map": "/Pokemon-cards-memory-game/static/css/main.e9d6d2dc.chunk.css.map",
+    "static/css/main.2e2cd4f4.chunk.css.map": "/Pokemon-cards-memory-game/static/css/main.2e2cd4f4.chunk.css.map",
     "static/js/2.1bb22a90.chunk.js.LICENSE.txt": "/Pokemon-cards-memory-game/static/js/2.1bb22a90.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.0426b798.js",
     "static/js/2.1bb22a90.chunk.js",
-    "static/css/main.e9d6d2dc.chunk.css",
+    "static/css/main.2e2cd4f4.chunk.css",
     "static/js/main.e23cd114.chunk.js"
   ]
 }
