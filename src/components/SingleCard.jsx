@@ -7,7 +7,8 @@ const SingleCard = ({
     handleChoice,
     flipped,
     disabled,
-    scale
+    scale,
+    breakPoint
 
 }) => {
 
@@ -16,11 +17,23 @@ const SingleCard = ({
             handleChoice(image)
         }
     }
+
+    const desktop = { flex: `0 1 calc(18rem * ${scale})` }
+    const tablet = { flex: `0 1 calc(12rem * ${scale})` }
+    const laptop = { flex: `0 1 calc(14rem * ${scale})` }
+    const mobile = { flex: `0 1 calc(6rem * ${scale})` }
+
+    console.log(breakPoint)
+    const imgScale = { 'maxHeight': `calc(12.5rem * ${scale})`, 'maxWidth': `calc(16.625rem * ${scale})` }
     return (
         <div
-            style={{
-                flex: `0 1 calc(16rem * ${scale})`
-            }}
+            style={
+                (breakPoint === 'mobile' && mobile) ||
+                (breakPoint === 'tablet' && tablet) ||
+                (breakPoint === 'laptop' && laptop) ||
+                (breakPoint === 'desktop' && desktop)
+
+            }
             className="card">
             <div
                 className={flipped ? "flipped" : ""}
@@ -29,7 +42,7 @@ const SingleCard = ({
                     className="front"
                     src={image.src}
                     alt='card front'
-                    style={{ 'maxHeight': `calc(200px * ${scale})`, 'maxWidth': `calc(250px * ${scale})` }}
+                    style={imgScale}
                 />
                 <img
                     className="back"

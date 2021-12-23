@@ -2,9 +2,22 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import SingleCard from './components/SingleCard';
 import useLocalStorage from './utils/useLocalStorage';
+import breakPointsObserver from './utils/breakPointsObserver'
+
+const breakPoints = {
+  mobile: "(max-width:600px)",
+  tablet: "(min-width:600px) and (max-width:769px)",
+  laptop: "(min-width:770px) and (max-width:1024px)",
+  desktop: "(min-width:1025px)",
+}
 
 function App() {
 
+  const [breakPoint, isBreakPoint] = useState();
+  useEffect(()=>{
+    breakPointsObserver(breakPoints, isBreakPoint)
+  },[breakPoint]) //media query hook
+  
   const [newArray, setNewArray] = useState([]);//Initial array 
   const [pokemonArray, setPokemonArray] = useState([]);// img array
   const [turns, setTurns] = useState(0);
@@ -154,6 +167,7 @@ function App() {
             flipped={pokemon === choiceOne || pokemon === choiceTwo || pokemon.matched}
             disabled={disabled}
             scale={scale}
+            breakPoint={breakPoint}
           />
         ))}
       </div>

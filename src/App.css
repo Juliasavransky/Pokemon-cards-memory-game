@@ -56,3 +56,17 @@ body {
   font-size: 4vh;
   background-color: #c7ccdb;
 }
+@media screen and (max-width: 800px) {
+ .heder{
+   font-size:4rem;
+   top:40%;
+ }
+ .game-data{
+   font-size:1rem;
+   justify-content: space-around;
+ }
+
+ .card{
+   margin: auto;
+ }
+}
