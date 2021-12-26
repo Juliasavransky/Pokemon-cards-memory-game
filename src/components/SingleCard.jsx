@@ -17,14 +17,17 @@ const SingleCard = ({
             handleChoice(image)
         }
     }
+ 
+    const mobile = { flex: `0 1 calc(11rem * ${scale})` }
+    const tablet = { flex: `0 1 calc(16rem * ${scale})` }
+    const laptop = { flex: `0 1 calc(18rem * ${scale})` }
+    const desktop = { flex: `0 1 calc(24rem * ${scale})` }
 
-    const desktop = { flex: `0 1 calc(18rem * ${scale})` }
-    const tablet = { flex: `0 1 calc(12rem * ${scale})` }
-    const laptop = { flex: `0 1 calc(14rem * ${scale})` }
-    const mobile = { flex: `0 1 calc(6rem * ${scale})` }
+    const imgMobile = { 'maxHeight': `calc(9rem * ${scale})`, 'maxWidth': `calc(11rem * ${scale})` }
+    const imgTablet = { 'maxHeight': `calc(12.5rem * ${scale})`, 'maxWidth': `calc(16rem * ${scale})` }
+    const imgLaptop = { 'maxHeight': `calc(14rem * ${scale})`, 'maxWidth': `calc(18rem * ${scale})` }
+    const imgDesktop = { 'maxHeight': `calc(18rem * ${scale})`, 'maxWidth': `calc(24rem * ${scale})` }
 
-    console.log(breakPoint)
-    const imgScale = { 'maxHeight': `calc(12.5rem * ${scale})`, 'maxWidth': `calc(16.625rem * ${scale})` }
     return (
         <div
             style={
@@ -42,7 +45,13 @@ const SingleCard = ({
                     className="front"
                     src={image.src}
                     alt='card front'
-                    style={imgScale}
+                    style={
+                        (breakPoint === 'mobile' && imgMobile) ||
+                        (breakPoint === 'tablet' && imgTablet) ||
+                        (breakPoint === 'laptop' && imgLaptop) ||
+                        (breakPoint === 'desktop' && imgDesktop)
+
+                    }
                 />
                 <img
                     className="back"

@@ -6,27 +6,22 @@ body {
   padding: 0;
 }
 .game {
-  margin: auto;
   -webkit-text-stroke: 2px #2a324b;
-  font-family: 'Pokemon' ,'Macondo', cursive;
+  font-family: 'Pokemon', 'Macondo', cursive;
   color: #ef3e2e;
   letter-spacing: 4px;
-  text-align: center;
-  background-image: url("https://wallpapercave.com/wp/cqhO8rQ.jpg") ;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  z-index: 2;
+  background-image: linear-gradient(to right bottom, #ef3e2e, #f66929, #f98d2d, #fbad3c, #fbcc54, #ffbf5d, #ffb368, #fba872, #da7c7b, #a25e7d, #62496d, #2a324b);  z-index: 2;
   min-height: 100vh;
+  text-align: center;
 }
 .heder {
   -webkit-text-stroke: 4px #2a324b;
-  font-size: 8rem;
+  font-size: 10rem;
   position: absolute;
   left: 10%;
   right: 10%;
   z-index: 1;
-  top:20%;
+  top: 15%;
   max-width: 100vw;
   max-height: 100vh;
   display: block;
@@ -36,18 +31,20 @@ body {
 
 @keyframes textZoom {
   0% {
-  transform: scale(0);
+    transform: scale(0);
   }
   70% {
-  transform: scale(1.5);
+    transform: scale(1.5);
   }
   100% {
     transform: scale(0);
-    }
   }
+}
+
 .card-grid {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.1rem;
 }
 
 .game-data {
@@ -56,17 +53,38 @@ body {
   font-size: 4vh;
   background-color: #c7ccdb;
 }
-@media screen and (max-width: 800px) {
- .heder{
-   font-size:4rem;
-   top:40%;
- }
- .game-data{
-   font-size:1rem;
-   justify-content: space-around;
- }
 
- .card{
-   margin: auto;
- }
+@media screen and (width> 900px) and (width< 1281px) {
+  .heder {
+    font-size: 7rem;
+    top: 30%;
+  }
+  .game-data {
+    font-size: 1.8rem;
+    justify-content: space-around;
+    margin-bottom: 1.3rem;
+  }
+}
+
+@media screen and (width> 600px) and (width< 900px) {
+  .heder {
+    font-size:4rem;
+    top: 40%;
+  }
+  .game-data {
+    font-size: 1.5rem;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+  }
+}
+
+@media screen and (width< 600px) {
+  .heder {
+    font-size: 4rem;
+    top: 20%;
+  }
+  .game-data {
+    font-size: 1rem;
+    justify-content: space-around;
+  }
 }

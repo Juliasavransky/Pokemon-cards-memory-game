@@ -6,9 +6,9 @@ import breakPointsObserver from './utils/breakPointsObserver'
 
 const breakPoints = {
   mobile: "(max-width:600px)",
-  tablet: "(min-width:600px) and (max-width:769px)",
-  laptop: "(min-width:770px) and (max-width:1024px)",
-  desktop: "(min-width:1025px)",
+  tablet: "(min-width:600px) and (max-width:900px)",
+  laptop: "(min-width:901px) and (max-width:1281px)",
+  desktop: "(min-width:1282px)",
 }
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
   useEffect(()=>{
     breakPointsObserver(breakPoints, isBreakPoint)
   },[breakPoint]) //media query hook
-  
+
   const [newArray, setNewArray] = useState([]);//Initial array 
   const [pokemonArray, setPokemonArray] = useState([]);// img array
   const [turns, setTurns] = useState(0);
@@ -134,7 +134,7 @@ function App() {
       resetLevel()
       setLevel(prevLevel => prevLevel + 1)
       setLevelLength(prevLevelLength => prevLevelLength + 1)
-      setScale(prevScale => prevScale - 0.075)
+      setScale(prevScale => prevScale - 0.1)
       setScore(prevScore => prevScore + Math.floor(((pokemonArray.length / 2) / turns) * 100))
       shuffleCards()
     }
