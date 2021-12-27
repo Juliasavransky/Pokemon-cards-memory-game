@@ -14,9 +14,9 @@ const breakPoints = {
 function App() {
 
   const [breakPoint, isBreakPoint] = useState();
-  useEffect(()=>{
+  useEffect(() => {
     breakPointsObserver(breakPoints, isBreakPoint)
-  },[breakPoint]) //media query hook
+  }, [breakPoint]) //media query hook
 
   const [newArray, setNewArray] = useState([]);//Initial array 
   const [pokemonArray, setPokemonArray] = useState([]);// img array
@@ -148,14 +148,29 @@ function App() {
 
   }, [levelLength])
 
+  // clear the local storage memory and reset the game
+  const clearHandler = () => {
+    window.localStorage.clear()
+    setEndThisRound(false)
+    resetLevel()
+    setLevel(1)
+    setLevelLength(3)
+    setScale(1)
+    setScore(0)
+    shuffleCards()
+  }
 
   return (
     <div className="game">
       <div className="heder"> {heder}</div>
       <div className="game-data">
-        <div>Turns: {turns}</div>
-        <div>Level: {level}</div>
-        <div>Score: {score}</div>
+        <div>Turns:{turns}</div>
+        <div>Level:{level}</div>
+        <div>Score:{score}</div>
+        <span
+          className="btn"
+          onClick={clearHandler}>Clear
+        </span>
       </div>
 
       <div className="card-grid">
@@ -171,7 +186,7 @@ function App() {
           />
         ))}
       </div>
-
+ 
     </div>
   );
 }
