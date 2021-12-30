@@ -17,7 +17,7 @@ const SingleCard = ({
             handleChoice(image)
         }
     }
- 
+
     const mobile = { flex: `0 1 calc(11rem * ${scale})` }
     const tablet = { flex: `0 1 calc(16rem * ${scale})` }
     const laptop = { flex: `0 1 calc(18rem * ${scale})` }
@@ -42,6 +42,7 @@ const SingleCard = ({
                 className={flipped ? "flipped" : ""}
             >
                 <img
+                    decoding='async'
                     className="front"
                     src={image.src}
                     alt='card front'
