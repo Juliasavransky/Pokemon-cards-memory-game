@@ -1,6 +1,6 @@
 import React from 'react';
 import './singleCard.css';
-
+import logo from '../utils/img/logo.png';
 
 const SingleCard = ({
     image,
@@ -56,7 +56,7 @@ const SingleCard = ({
                 />
                 <img
                     className="back"
-                    src="https://www.logopik.com/wp-content/uploads/edd/2018/07/Pokeball-Vector-Logo.png"
+                    src={logo}
                     alt="card caver"
                     onClick={handleClick}
                 />

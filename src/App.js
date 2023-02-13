@@ -91,7 +91,8 @@ function App() {
         resetTurn()
       }
       else {
-        setTimeout(() => resetTurn(), 1000)
+        setTimeout(() => resetTurn(), 1000);
+        return () => clearTimeout();
       }
     }
   }, [choiceOne, choiceTwo])
@@ -124,7 +125,7 @@ function App() {
       setTimeout(() => setHeder("Good Job! Next Level"), 1500)
 
     }
-    return () => clearTimeout()
+    return () => clearTimeout();
   }, [pokemonArray, turns])
 
   //starting new round more cards 
@@ -138,13 +139,15 @@ function App() {
       setScore(prevScore => prevScore + Math.floor(((pokemonArray.length / 2) / turns) * 100))
       shuffleCards()
     }
+
   }, [endThisRound])
 
   //starting the game automatically
   useEffect(() => {
     shuffleCards()
-    setTimeout(() => setHeder(""), 3500)
-    return () => clearTimeout()
+    setTimeout(() => setHeder(""), 3500);
+
+    return () => clearTimeout();
 
   }, [levelLength])
 
@@ -186,7 +189,7 @@ function App() {
           />
         ))}
       </div>
- 
+
     </div>
   );
 }

@@ -73,14 +73,15 @@ body {
 
 .btn {
   font-size: 3vh;
-  margin:auto 0 ;
+  margin: auto 0;
   cursor: pointer;
   border: 3px dotted #240606;
   border-radius: 30px;
   padding: 0 3rem;
   letter-spacing: 6px;
 }
-.btn:hover ,.btn:focus{
+.btn:hover,
+.btn:focus {
   color: transparent;
   transition: 0.8s ease-in-out;
   -webkit-text-stroke: 1px #2a324b;
@@ -97,11 +98,11 @@ body {
     justify-content: space-around;
     margin-bottom: 1.3rem;
   }
-  .btn{
+  .btn {
     font-size: 1.8rem;
-
   }
-  .btn:hover ,.btn:focus{
+  .btn:hover,
+  .btn:focus {
     font-size: 1.8rem;
   }
 }
@@ -116,11 +117,11 @@ body {
     justify-content: space-around;
     margin-bottom: 1rem;
   }
-  .btn{
+  .btn {
     font-size: 1.5rem;
-
   }
-  .btn:hover ,.btn:focus{
+  .btn:hover,
+  .btn:focus {
     font-size: 1.5rem;
   }
 }
@@ -134,13 +135,13 @@ body {
     font-size: 1rem;
     justify-content: space-around;
   }
-  .btn{
+  .btn {
     font-size: 1rem;
     padding: 0 1rem;
     border: 3px dotted #240606;
-
   }
-  .btn:hover ,.btn:focus{
+  .btn:hover,
+  .btn:focus {
     font-size: 1rem;
   }
 }
