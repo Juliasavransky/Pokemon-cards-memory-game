@@ -1,3 +1,13 @@
+# Pokémon Cards memory game
+
+### A memory game of cards with Pokémon figures. The game has unlimited levels, whereas in each level the number of cards rises, and the cards' size gets smaller in order to make room for the new cards. The figures on the cards are randomly chosen from the 560 figures of Pokemon, using the Pokemon API. The score is differentially calculated between levels. The app stores the scoring and level in local storage, which can be reset by the player.
+
+![image](https://user-images.githubusercontent.com/63636407/154819702-d40c51e4-381b-4c9a-8932-dad83ea768bd.png)
+
+For building this app I've used react hooks, local storage hook, and media queries hook for responsive layout.
+
+# [Visit the page](https://juliasavransky.github.io/Pokemon-cards-memory-game/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
