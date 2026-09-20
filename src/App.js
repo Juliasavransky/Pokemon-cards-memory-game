@@ -1,25 +1,64 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import SingleCard from './components/SingleCard';
 import useLocalStorage from './utils/useLocalStorage';
-import breakPointsObserver from './utils/breakPointsObserver'
 
 const breakPoints = {
-  mobile: "(max-width:600px)",
-  tablet: "(min-width:600px) and (max-width:900px)",
-  laptop: "(min-width:901px) and (max-width:1281px)",
-  desktop: "(min-width:1282px)",
-}
+  mobile: '(max-width:600px)',
+  tablet: '(min-width:600px) and (max-width:900px)',
+  laptop: '(min-width:901px) and (max-width:1281px)',
+  desktop: '(min-width:1282px)',
+};
+
+const getRandomPokemonUrl = () => {
+  const randomId = Math.floor(Math.random() * 648) + 1;
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${randomId}.svg`;
+};
+
+export const shuffleArray = (array) => {
+  const copy = [...array];
+
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[randomIndex]] = [copy[randomIndex], copy[i]];
+  }
+
+  return copy;
+};
+
+export const createDeck = (levelLength) => {
+  const uniqueCards = Array.from({ length: levelLength }, () => ({
+    src: getRandomPokemonUrl(),
+    matched: false,
+  }));
+
+  return shuffleArray(
+    uniqueCards.flatMap((card) => [
+      { ...card, id: `${card.src}-a-${Math.random().toString(16).slice(2)}` },
+      { ...card, id: `${card.src}-b-${Math.random().toString(16).slice(2)}` },
+    ])
+  );
+};
 
 function App() {
+  const [breakPoint, setBreakPoint] = useState('desktop');
 
-  const [breakPoint, isBreakPoint] = useState();
   useEffect(() => {
-    breakPointsObserver(breakPoints, isBreakPoint)
-  }, [breakPoint]) //media query hook
+    const updateBreakPoint = () => {
+      const current = Object.entries(breakPoints).find(([, query]) =>
+        window.matchMedia(query).matches
+      );
 
-  const [newArray, setNewArray] = useState([]);//Initial array 
-  const [pokemonArray, setPokemonArray] = useState([]);// img array
+      setBreakPoint(current ? current[0] : 'desktop');
+    };
+
+    updateBreakPoint();
+    window.addEventListener('resize', updateBreakPoint);
+
+    return () => window.removeEventListener('resize', updateBreakPoint);
+  }, []);
+
+  const [pokemonArray, setPokemonArray] = useState(() => createDeck(3));
   const [turns, setTurns] = useState(0);
 
   const [choiceOne, setChoiceOne] = useState(null);
@@ -27,169 +66,167 @@ function App() {
   const [disabled, setDisabled] = useState(false);
 
   const [level, setLevel] = useLocalStorage('level', 1);
-  const [levelLength, setLevelLength] = useLocalStorage('levelLength', 3);//1/2 cards in the game
-  const [heder, setHeder] = useState("Memory Game");//heder for the page
+  const [levelLength, setLevelLength] = useLocalStorage('levelLength', 3);
+  const [heder, setHeder] = useState('Memory Game');
 
-  const [endThisRound, setEndThisRound] = useState(false);//end of the round = all cards open
-  const [scale, setScale] = useLocalStorage('scale', 1);//scale of the cards getting smaller etch round
+  const [endThisRound, setEndThisRound] = useState(false);
+  const [scale, setScale] = useLocalStorage('scale', 1);
   const [score, setScore] = useLocalStorage('score', 0);
 
+  const columns = Math.ceil(Math.sqrt(pokemonArray.length || 1));
+  const effectiveColumns = breakPoint === 'mobile' ? Math.min(columns, 3) : columns;
 
-  //generate the array of cards
-  useMemo(() => {
-    let pokemonGenerate = [];
-    for (let i = 0; i < levelLength; i++) {
-      pokemonGenerate[i] = {
-        src: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${Math.floor((Math.random() * 648) + 1)}.svg`,
-        matched: false,
-      }
-    }
-    setNewArray(pokemonGenerate);
-  }, [levelLength])
-
-  // sorting the cards
-  const shuffleCards = () => {
-    let dabbledArr = [...newArray, ...newArray]
-    let numberOfItems = dabbledArr.length, arrItem, randomPlace;
-    // While there remain elements to shuffle…
-    while (numberOfItems) {
-      // Pick a remaining element…
-      randomPlace = Math.floor(Math.random() * numberOfItems--)
-      // And swap it with the current element.
-      arrItem = dabbledArr[numberOfItems];
-      dabbledArr[numberOfItems] = dabbledArr[randomPlace]
-      dabbledArr[randomPlace] = arrItem
-    }
-    const shuffleArr = dabbledArr.map(item => ({ ...item, id: Math.floor(Math.random() * 1000) }))
-    setPokemonArray(shuffleArr)
-    setTurns(0)
-    setChoiceOne(null)
-    setChoiceTwo(null)
-  }
-
-  //handle a choice
-  const handleChoice = (image) => {
-    choiceOne
-      ? setChoiceTwo(image)
-      : setChoiceOne(image)
-  }
-
-  //matching cards
   useEffect(() => {
-    if (choiceOne && choiceTwo) {
-      setDisabled(true)
-      if (choiceOne.src === choiceTwo.src) {
-        setPokemonArray(prevPokemon => {
-          return prevPokemon.map(pokemon => {
-            if (pokemon.src === choiceOne.src) {
-              return { ...pokemon, matched: true }
-            } else {
-              return pokemon
-            }
-          })
-        })
-        resetTurn()
-      }
-      else {
-        setTimeout(() => resetTurn(), 1000);
-        return () => clearTimeout();
-      }
-    }
-  }, [choiceOne, choiceTwo])
+    setPokemonArray(createDeck(levelLength));
+    setTurns(0);
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setDisabled(false);
+  }, [levelLength]);
 
-
-  //setting for the new turn
   const resetTurn = () => {
-    setChoiceOne(null)
-    setChoiceTwo(null)
-    setTurns(prevTurn => prevTurn + 1)
-    setDisabled(false)
-  }
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns((prevTurn) => prevTurn + 1);
+    setDisabled(false);
+  };
 
-  //setting for the new level/round
   const resetLevel = () => {
-    setChoiceOne(null)
-    setChoiceTwo(null)
-    setTurns(0)
-    setDisabled(false)
-  }
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns(0);
+    setDisabled(false);
+  };
 
-  //Chekiang if this round is over and moving to the next round
-  useEffect(() => {
-    let matchedChecker = pokemonArray.every((pokemon) => {
-      return pokemon.matched === true
-    })
-
-    if (turns && matchedChecker === true) {
-      setTimeout(() => setEndThisRound(true), 3000)
-      setTimeout(() => setHeder("Good Job! Next Level"), 1500)
-
-    }
-    return () => clearTimeout();
-  }, [pokemonArray, turns])
-
-  //starting new round more cards 
-  useEffect(() => {
-    if (endThisRound) {
-      setEndThisRound(false)
-      resetLevel()
-      setLevel(prevLevel => prevLevel + 1)
-      setLevelLength(prevLevelLength => prevLevelLength + 1)
-      setScale(prevScale => prevScale - 0.1)
-      setScore(prevScore => prevScore + Math.floor(((pokemonArray.length / 2) / turns) * 100))
-      shuffleCards()
+  const handleChoice = (image) => {
+    if (choiceOne) {
+      setChoiceTwo(image);
+      return;
     }
 
-  }, [endThisRound])
+    setChoiceOne(image);
+  };
 
-  //starting the game automatically
   useEffect(() => {
-    shuffleCards()
-    setTimeout(() => setHeder(""), 3500);
+    if (!choiceOne || !choiceTwo) {
+      return undefined;
+    }
 
-    return () => clearTimeout();
+    setDisabled(true);
 
-  }, [levelLength])
+    if (choiceOne.src === choiceTwo.src) {
+      setPokemonArray((prevPokemon) =>
+        prevPokemon.map((pokemon) =>
+          pokemon.src === choiceOne.src ? { ...pokemon, matched: true } : pokemon
+        )
+      );
+      resetTurn();
+      return undefined;
+    }
 
-  // clear the local storage memory and reset the game
+    const timeoutId = setTimeout(() => resetTurn(), 1000);
+    return () => clearTimeout(timeoutId);
+  }, [choiceOne, choiceTwo]);
+
+  useEffect(() => {
+    if (pokemonArray.length === 0 || !pokemonArray.every((pokemon) => pokemon.matched)) {
+      return undefined;
+    }
+
+    const successTimer = setTimeout(() => setHeder('Good Job! Next Level'), 1500);
+    const nextRoundTimer = setTimeout(() => setEndThisRound(true), 3000);
+
+    return () => {
+      clearTimeout(successTimer);
+      clearTimeout(nextRoundTimer);
+    };
+  }, [pokemonArray]);
+
+  useEffect(() => {
+    if (!endThisRound) {
+      return undefined;
+    }
+
+    const nextLevelTimer = setTimeout(() => {
+      setEndThisRound(false);
+      resetLevel();
+      setHeder('Memory Game');
+      setLevel((prevLevel) => prevLevel + 1);
+      setLevelLength((prevLevelLength) => {
+        const nextLevelLength = prevLevelLength + 1;
+        setPokemonArray(createDeck(nextLevelLength));
+        return nextLevelLength;
+      });
+      setScale((prevScale) => Math.max(0.72, Number((prevScale - 0.05).toFixed(2))));
+      setScore((prevScore) => prevScore + Math.floor(((pokemonArray.length / 2) / Math.max(turns, 1)) * 100));
+    }, 1000);
+
+    return () => clearTimeout(nextLevelTimer);
+  }, [endThisRound, pokemonArray.length, turns, setLevel, setLevelLength, setScale, setScore]);
+
+  useEffect(() => {
+    const introTimer = setTimeout(() => setHeder(''), 3500);
+    return () => clearTimeout(introTimer);
+  }, [levelLength]);
+
   const clearHandler = () => {
-    window.localStorage.clear()
-    setEndThisRound(false)
-    resetLevel()
-    setLevel(1)
-    setLevelLength(3)
-    setScale(1)
-    setScore(0)
-    shuffleCards()
-  }
+    window.localStorage.clear();
+    setEndThisRound(false);
+    resetLevel();
+    setHeder('Memory Game');
+    setLevel(1);
+    setLevelLength(3);
+    setScale(1);
+    setScore(0);
+    setPokemonArray(createDeck(3));
+  };
 
   return (
-    <div className="game">
-      <div className="heder"> {heder}</div>
-      <div className="game-data">
-        <div>Turns:{turns}</div>
-        <div>Level:{level}</div>
-        <div>Score:{score}</div>
-        <span
-          className="btn"
-          onClick={clearHandler}>Clear
-        </span>
-      </div>
+    <div
+      className="game"
+      style={{
+        '--columns': effectiveColumns,
+        '--rows': Math.ceil((pokemonArray.length || 1) / effectiveColumns),
+      }}
+    >
+      <div className="game-shell">
+        <div className="game-board">
+          <div className="heder"> {heder}</div>
 
-      <div className="card-grid">
-        {pokemonArray.map(pokemon => (
-          <SingleCard
-            image={pokemon}
-            key={pokemon.id}
-            handleChoice={handleChoice}
-            flipped={pokemon === choiceOne || pokemon === choiceTwo || pokemon.matched}
-            disabled={disabled}
-            scale={scale}
-            breakPoint={breakPoint}
-          />
-        ))}
-      </div>
+          <div className="card-grid">
+            {pokemonArray.map((pokemon) => (
+              <SingleCard
+                image={pokemon}
+                key={pokemon.id}
+                handleChoice={handleChoice}
+                flipped={pokemon === choiceOne || pokemon === choiceTwo || pokemon.matched}
+                disabled={disabled}
+                scale={scale}
+                breakPoint={breakPoint}
+              />
+            ))}
+          </div>
+        </div>
 
+        <aside className="game-data" aria-label="Game stats">
+          <div className="stat">
+            <span>Turns</span>
+            <strong>{turns}</strong>
+          </div>
+          <div className="stat">
+            <span>Level</span>
+            <strong>{level}</strong>
+          </div>
+          <div className="stat">
+            <span>Score</span>
+            <strong>{score}</strong>
+          </div>
+          <button type="button" className="btn" onClick={clearHandler} aria-label="Clear game">
+            <span>Clear</span>
+            C
+          </button>
+        </aside>
+      </div>
     </div>
   );
 }
